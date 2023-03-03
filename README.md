@@ -10,4 +10,4 @@ Made with Javascript
 ![Screenshot](test.jpg)
 
 # saved png of my art :)
-![Screenshot](canvas-unlimited.jpg)
+![Screenshot](canvas-unlimited.png)
