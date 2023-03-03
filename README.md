@@ -7,7 +7,7 @@ Made with Javascript
 # - Color options on the gui
 # - Drawing is savable as png
 # UI - canvasunlimited.netlify.app (wip)
-![Screenshot](test.jpg)
+![Screenshot](test.JPG)
 
 # saved png of my art :)
 ![Screenshot](canvas-unlimited.png)
