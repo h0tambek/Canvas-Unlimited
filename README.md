@@ -1,11 +1,11 @@
 # Canvas-Unlimited
-a very different take on art, (work in progress)
+a different take on drawing (work in progress)
 Made with Javascript
 
 # Currently you can:
-# - Draw with text
-# - Color options on the gui
-# - Drawing is savable as png
+ - Draw with text
+ - Color options on the gui
+ - Drawing is savable as png
 # UI - canvasunlimited.netlify.app (wip)
 ![Screenshot](test.JPG)
 
