@@ -3,6 +3,7 @@ const textForm = document.getElementById("text-form");
 const textInput = document.getElementById("text-input");
 const colorPicker = document.getElementById("color-picker");
 const guiToggle = document.getElementById("gui-toggle");
+const saveButton = document.getElementById("save-button");
 
 let mouseStartX = 0;
 let mouseStartY = 0;
@@ -13,7 +14,59 @@ function setGuiPosition(x, y) {
   guiContainer.style.left = `${x - guiOffsetX}px`;
   guiContainer.style.top = `${y - guiOffsetY}px`;
 }
-
+function handleSaveClick() {
+	const elements = document.getElementsByClassName("pasted-text");
+	const canvas = document.createElement("canvas");
+	const ctx = canvas.getContext("2d");
+	let minX = window.innerWidth;
+	let minY = window.innerHeight;
+	let maxX = 0;
+	let maxY = 0;
+	
+	for (let i = 0; i < elements.length; i++) {
+	  const element = elements[i];
+	  const rect = element.getBoundingClientRect();
+	  if (rect.left < minX) {
+		minX = rect.left;
+	  }
+	  if (rect.top < minY) {
+		minY = rect.top;
+	  }
+	  if (rect.right > maxX) {
+		maxX = rect.right;
+	  }
+	  if (rect.bottom > maxY) {
+		maxY = rect.bottom;
+	  }
+	}
+	
+	const width = maxX - minX;
+	const height = maxY - minY;
+	
+	canvas.width = width;
+	canvas.height = height;
+	
+	ctx.clearRect(0, 0, width, height);
+	
+	for (let i = 0; i < elements.length; i++) {
+	  const element = elements[i];
+	  const rect = element.getBoundingClientRect();
+	  const x = rect.left - minX;
+	  const y = rect.top - minY;
+	  const color = element.style.color;
+	  ctx.fillStyle = color;
+	  ctx.fillText(element.innerText, x, y);
+	}
+	
+	const dataUrl = canvas.toDataURL("image/png");
+	const link = document.createElement("a");
+	link.href = dataUrl;
+	link.download = "canvas-unlimited.png";
+	link.click();
+  }
+  
+  saveButton.addEventListener("click", handleSaveClick);
+  
 function handleGuiMouseDown(event) {
   mouseStartX = event.clientX;
   mouseStartY = event.clientY;
@@ -46,33 +99,68 @@ function handleSubmit(event) {
   guiContainer.style.display = "none";
   document.addEventListener("click", handleClick);
   
-  function handleClick(event) {
-	const openGuiButton = document.getElementById("gui-toggle");
-	if (guiContainer.style.display !== "none") {
-		return;
-	  }
-	const buttonRect = openGuiButton.getBoundingClientRect();
-	if (event.clientX >= buttonRect.left && event.clientX <= buttonRect.right && event.clientY >= buttonRect.top && event.clientY <= buttonRect.bottom) {
-	  return;
-	}
-	const textElement = document.createElement("div");
-	textElement.classList.add("pasted-text");
-	textElement.innerText = lastText;
-	textElement.style.position = "absolute";
-	textElement.style.zIndex = "0.5";
-	textElement.style.color = color;
-	textElement.style.userSelect = "none";
-	
-	const textWidth = textElement.offsetWidth;
-	const textHeight = textElement.offsetHeight;
-	const centerX = event.clientX - textWidth / 2;
-	const centerY = event.clientY - textHeight / 2;
-	
-	textElement.style.top = `${centerY}px`;
-	textElement.style.left = `${centerX}px`;
-  
-	document.body.appendChild(textElement);
-  }
+  let isDrawing = false;
+
+function handleClick(event) {
+    const openGuiButton = document.getElementById("gui-toggle");
+    if (guiContainer.style.display !== "none") {
+        return;
+    }
+    const buttonRect = openGuiButton.getBoundingClientRect();
+    if (event.clientX >= buttonRect.left && event.clientX <= buttonRect.right && event.clientY >= buttonRect.top && event.clientY <= buttonRect.bottom) {
+        return;
+    }
+    if (!isDrawing) {
+        const textElement = document.createElement("div");
+        textElement.classList.add("pasted-text");
+        textElement.innerText = lastText;
+        textElement.style.position = "absolute";
+        textElement.style.zIndex = "0.5";
+        textElement.style.color = color;
+        textElement.style.userSelect = "none";
+        
+        const textWidth = textElement.offsetWidth;
+        const textHeight = textElement.offsetHeight;
+        const centerX = event.clientX - textWidth / 2;
+        const centerY = event.clientY - textHeight / 2;
+        
+        textElement.style.top = `${centerY}px`;
+        textElement.style.left = `${centerX}px`;
+      
+        document.body.appendChild(textElement);
+    }
+}
+
+document.addEventListener("mousedown", () => {
+    isDrawing = true;
+});
+
+document.addEventListener("mouseup", () => {
+    isDrawing = false;
+});
+
+document.addEventListener("mousemove", (event) => {
+    if (isDrawing) {
+        const textElement = document.createElement("div");
+        textElement.classList.add("pasted-text");
+        textElement.innerText = lastText;
+        textElement.style.position = "absolute";
+        textElement.style.zIndex = "0.5";
+        textElement.style.color = color;
+        textElement.style.userSelect = "none";
+        
+        const textWidth = textElement.offsetWidth;
+        const textHeight = textElement.offsetHeight;
+        const centerX = event.clientX - textWidth / 2;
+        const centerY = event.clientY - textHeight / 2;
+        
+        textElement.style.top = `${centerY}px`;
+        textElement.style.left = `${centerX}px`;
+      
+        document.body.appendChild(textElement);
+    }
+});
+
   
   
 }

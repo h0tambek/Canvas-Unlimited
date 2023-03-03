@@ -22,13 +22,22 @@
 }
 
 #text-input {
-  width: 60%;
+  width: 80%;
+  height: 10px;
   padding: 0.5em;
   border-radius: 8px;
   border: none;
   background-color: black;
-  color:  white;
+  color: white;
   margin-right: 0.5em;
+  word-wrap: break-word;
+}
+#color-picker {
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 1%;
+  background-color: rgb(226, 230, 45);
 }
 #gui-toggle,
 #gui-container {
@@ -39,6 +48,15 @@
   position: fixed;
   user-select: none;
   z-index: 2;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+}
+
+#gui-toggle:hover {
+  background-color: #444;
 }
 #submit-button {
   padding: 0.5em 1em;
@@ -52,4 +70,34 @@
 
 #submit-button:hover {
   background-color: #eee;
+}
+#save-button {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  user-select: none;
+  z-index: 2;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+}
+
+#save-button:hover {
+  background-color: #444;
+}
+#text-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5em;
+}
+
+#color-picker {
+  margin-top: 1em;
+}
+
+#submit-button {
+  margin-top: 1em;
 }
