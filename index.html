@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Draggable GUI</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+    <title>Canvas Unlimited</title>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-    <button id="gui-toggle">Open GUI</button>
+    <button id="gui-toggle">Toggle Text GUI</button>
     <div id="gui-container">
       <h1 class="title">Enter Text to Paste</h1>
       <form id="text-form">
         <input id="text-input" type="text" placeholder="Enter text...">
+        <input id="color-picker" type="color">
         <button id="submit-button" type="submit">Submit</button>
       </form>
     </div>

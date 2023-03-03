@@ -1,6 +1,7 @@
 const guiContainer = document.getElementById("gui-container");
 const textForm = document.getElementById("text-form");
 const textInput = document.getElementById("text-input");
+const colorPicker = document.getElementById("color-picker");
 const guiToggle = document.getElementById("gui-toggle");
 
 let mouseStartX = 0;
@@ -38,6 +39,7 @@ function handleSubmit(event) {
   event.preventDefault();
   
   const text = textInput.value.trim();
+  const color = colorPicker.value;
   textInput.value = "";
   lastText = text;
 
@@ -57,8 +59,9 @@ function handleSubmit(event) {
 	textElement.classList.add("pasted-text");
 	textElement.innerText = lastText;
 	textElement.style.position = "absolute";
-	textElement.style.zIndex = "0.5"; 
-
+	textElement.style.zIndex = "0.5";
+	textElement.style.color = color;
+	textElement.style.userSelect = "none";
 	
 	const textWidth = textElement.offsetWidth;
 	const textHeight = textElement.offsetHeight;
@@ -77,6 +80,7 @@ function handleSubmit(event) {
 guiContainer.addEventListener("mousedown", handleGuiMouseDown);
 
 textForm.addEventListener("submit", handleSubmit);
+
 function toggleGui() {
 	if (guiContainer.style.display === "none") {
 	  guiContainer.style.display = "block";
