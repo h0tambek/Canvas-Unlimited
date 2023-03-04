@@ -10,6 +10,7 @@ let mouseStartY = 0;
 let guiOffsetX = 0;
 let guiOffsetY = 0;
 
+
 function setGuiPosition(x, y) {
   guiContainer.style.left = `${x - guiOffsetX}px`;
   guiContainer.style.top = `${y - guiOffsetY}px`;
@@ -132,6 +133,14 @@ function handleClick(event) {
 }
 
 document.addEventListener("mousedown", () => {
+	const openGuiButton = document.getElementById("gui-toggle");
+    if (guiContainer.style.display !== "none") {
+        return;
+    }
+    const buttonRect = openGuiButton.getBoundingClientRect();
+    if (event.clientX >= buttonRect.left && event.clientX <= buttonRect.right && event.clientY >= buttonRect.top && event.clientY <= buttonRect.bottom) {
+        return;
+    }
     isDrawing = true;
 });
 
@@ -164,7 +173,16 @@ document.addEventListener("mousemove", (event) => {
   
   
 }
+const clearButton = document.getElementById("clear-button");
 
+function handleClearClick() {
+  const pastedTextElements = document.getElementsByClassName("pasted-text");
+  while (pastedTextElements.length > 0) {
+    pastedTextElements[0].remove();
+  }
+}
+
+clearButton.addEventListener("click", handleClearClick);
 guiContainer.addEventListener("mousedown", handleGuiMouseDown);
 
 textForm.addEventListener("submit", handleSubmit);
