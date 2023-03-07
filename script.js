@@ -226,36 +226,53 @@ function handleClearClick() {
       document.body.style.backgroundColor = "";
       document.body.style.color = "";
     }, 2000);
-
-    // Select 20 random locations on the page to place the messages.
-    const message = "You know you can do Ctrl+Z to undo, right?";
+  
+    const message = "ctrl z to undo :)";
     const bodyRect = document.body.getBoundingClientRect();
     const messages = Array.from(Array(40)).map(() => {
-      const x = Math.floor(Math.random() * window.innerWidth);
-      const y = Math.floor(Math.random() * window.innerHeight);
-      const messageElem = document.createElement("div");
-      messageElem.classList.add("placed-text");
-      messageElem.innerText = message;
-      messageElem.style.position = "absolute";
-      messageElem.style.top = `${y}px`;
-      messageElem.style.left = `${x}px`;
-      messageElem.style.fontSize = "200%";
-      messageElem.style.textShadow = "0 0 10px #f00";
-      messageElem.style.padding = "1em";
-      messageElem.style.fontFamily = "'Georgia', serif";
+  const x = Math.floor(Math.random() * window.innerWidth);
+  const y = Math.floor(Math.random() * window.innerHeight);
+  const messageElem = document.createElement("div");
+  messageElem.classList.add("placed-text");
+  messageElem.innerText = message;
+  messageElem.style.position = "absolute";
+  messageElem.style.top = `${y}px`;
+  messageElem.style.left = `${x}px`;
+  messageElem.style.fontSize = "200%";
+  messageElem.style.textShadow = "0 0 10px #f00";
+  messageElem.style.padding = "1em";
+  messageElem.style.fontFamily = "'Georgia', serif";
+  messageElem.style.transition = "all 5s ease-in-out";
 
+  document.body.appendChild(messageElem);
 
-      document.body.appendChild(messageElem);
-      return messageElem;
-    });
+  // Replace text with image after 1 second.
+  setTimeout(() => {
+    const imageElem = document.createElement("img");
+    imageElem.src = "rose.png";
+    imageElem.style.width = "10%";
+    imageElem.style.height = "10%";
+    imageElem.style.position = "absolute";
+    imageElem.style.top = `${y}px`;
+    imageElem.style.left = `${x}px`;
+    imageElem.style.transition = "all 5s ease-in-out";
+    messageElem.replaceWith(imageElem);
 
-    // Remove the messages after 5 seconds.
+    // Remove the message element after it floats away.
     setTimeout(() => {
-      messages.forEach((messageElem) => messageElem.remove());
-    }, 2000);
+      imageElem.style.transform = `translate(${Math.random() * 200 - 100}%, -100%)`;
+      imageElem.style.opacity = 0;
+      setTimeout(() => {
+        imageElem.remove();
+      }, 5000);
+    }, 1000);
+  }, 1000);
 
+  return messageElem;
+});
     messageDisplayed = true;
   }
+  
 }
 
 clearButton.addEventListener("click", handleClearClick);
