@@ -15,7 +15,7 @@
   color: #fff;
   user-select: none;
 }
-
+body{background-color: white;}
 #text-form {
   display: flex;
   justify-content: center;
@@ -42,7 +42,8 @@
   border-radius: 1%;
   background-color: rgb(226, 230, 45);
 }
-
+#color-picker-container{z-index: 3;}
+#change-color-button,
 #gui-toggle,
 #clear-button,
 #save-button {
@@ -56,11 +57,84 @@
   padding: 13px;
   user-select: none;
 }
+#gui-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  z-index: 2;
+  opacity: 95%;
+  padding: 1.5em;
+  background-color: #333;
+  border: 4px solid black;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  color: #fff;
+  user-select: none;
+}
 
+#text-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5em;
+}
+
+#text-input {
+  width: 80%;
+  height: 10px;
+  padding: 0.5em;
+  border-radius: 8px;
+  border: none;
+  background-color: black;
+  color: white;
+  margin-bottom: 0.5em;
+  word-wrap: break-word;
+}
+
+#color-picker {
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 1%;
+  background-color: rgb(226, 230, 45);
+  margin-bottom: 1em;
+}
+
+#canvas-container {
+  display: none;
+  margin-top: 1.5em;
+}
+
+#canvas {
+  border: 1px solid black;
+}
+
+#canvas-submit-button {
+  margin-top: 0.5em;
+}
+
+#mode-toggle {
+  border: none;
+  margin-top: 1em;
+  background-color: #444;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.5em;
+  cursor: pointer;
+  margin-bottom: 1em;
+}
+
+#mode-toggle:hover {
+  background-color: #555;
+}
 #gui-toggle {
   right: calc(2px + 60px);
 }
-
+#change-color-button
+{right: calc(2px + 182px);}
 #clear-button {
   right: 2px;
 }
@@ -68,7 +142,14 @@
 #save-button {
   left: 2px;
 }
-
+#color-picker-container {
+  position: fixed;
+  bottom: 0;
+  display: none;
+  right: 0;
+  margin: 20px;
+}
+#change-color-button:hover,
 #gui-toggle:hover,
 #clear-button:hover,
 #save-button:hover {
