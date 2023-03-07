@@ -6,7 +6,7 @@ const guiToggle = document.getElementById("gui-toggle");
 const saveButton = document.getElementById("save-button");
 let clearCount = 0;
 let messageDisplayed = false;
-
+let didBroEvenPressCtrlZBefore = false;
 let mouseStartX = 0;
 let mouseStartY = 0;
 let guiOffsetX = 0;
@@ -17,6 +17,7 @@ function handleUndo() {
   if (pastedTextElements.length > 0) {
     const lastElement = pastedTextElements.pop();
     lastElement.remove();
+    didBroEvenPressCtrlZBefore = true;
   }
 }
 
@@ -216,7 +217,7 @@ function handleClearClick() {
     pastedTextElements[0].remove();
   }
   clearCount++;
-  if (clearCount >= 3 && !messageDisplayed) {
+  if (clearCount >= 3 && !messageDisplayed && !didBroEvenPressCtrlZBefore) {
     // Change the background color to black and the text color to red for 1 second.
     document.body.style.backgroundColor = "black";
     document.body.style.transition = "background-color 1s ease-in-out";
