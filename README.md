@@ -1,4 +1,4 @@
-# Canvas-Unlimited
+# Canvas Unlimited
 a different take on drawing (work in progress)
 Made with Javascript
 
