@@ -10,5 +10,5 @@ Made with Javascript
 # UI - canvasunlimited.netlify.app (wip)
 ![Screenshot](test.JPG)
 
-# saved art 
-![Screenshot](canvas-unlimited -background.png)
+# art i saved
+![Screenshot](canvas-unlimited.png)
