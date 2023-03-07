@@ -246,7 +246,6 @@ function handleClearClick() {
 
   document.body.appendChild(messageElem);
 
-  // Replace text with image after 1 second.
   setTimeout(() => {
     const imageElem = document.createElement("img");
     imageElem.src = "rose.png";
@@ -258,7 +257,6 @@ function handleClearClick() {
     imageElem.style.transition = "all 5s ease-in-out";
     messageElem.replaceWith(imageElem);
 
-    // Remove the message element after it floats away.
     setTimeout(() => {
       imageElem.style.transform = `translate(${Math.random() * 200 - 100}%, -100%)`;
       imageElem.style.opacity = 0;
