@@ -4,12 +4,27 @@ const textInput = document.getElementById("text-input");
 const colorPicker = document.getElementById("color-picker");
 const guiToggle = document.getElementById("gui-toggle");
 const saveButton = document.getElementById("save-button");
- 
+let clearCount = 0;
+let messageDisplayed = false;
+
 let mouseStartX = 0;
 let mouseStartY = 0;
 let guiOffsetX = 0;
 let guiOffsetY = 0;
+const pastedTextElements = [];
 
+function handleUndo() {
+  if (pastedTextElements.length > 0) {
+    const lastElement = pastedTextElements.pop();
+    lastElement.remove();
+  }
+}
+
+window.addEventListener("keydown", (event) => {
+  if (event.ctrlKey && event.key === "z") {
+    handleUndo();
+  }
+});
 
 function setGuiPosition(x, y) {
   guiContainer.style.left = `${x - guiOffsetX}px`;
@@ -145,6 +160,8 @@ function handleClick(event) {
         textElement.style.left = `${centerX}px`;
         
         document.body.appendChild(textElement);
+        pastedTextElements.push(textElement);
+
     }
 }
 
@@ -183,6 +200,8 @@ document.addEventListener("mousemove", (event) => {
         textElement.style.left = `${centerX}px`;
       
         document.body.appendChild(textElement);
+        pastedTextElements.push(textElement);
+
     }
 });
 
@@ -195,6 +214,46 @@ function handleClearClick() {
   const pastedTextElements = document.getElementsByClassName("pasted-text");
   while (pastedTextElements.length > 0) {
     pastedTextElements[0].remove();
+  }
+  clearCount++;
+  if (clearCount >= 3 && !messageDisplayed) {
+    // Change the background color to black and the text color to red for 1 second.
+    document.body.style.backgroundColor = "black";
+    document.body.style.transition = "background-color 1s ease-in-out";
+    document.body.style.color = "red";
+    setTimeout(() => {
+      document.body.style.backgroundColor = "";
+      document.body.style.color = "";
+    }, 2000);
+
+    // Select 20 random locations on the page to place the messages.
+    const message = "You know you can do Ctrl+Z to undo, right?";
+    const bodyRect = document.body.getBoundingClientRect();
+    const messages = Array.from(Array(40)).map(() => {
+      const x = Math.floor(Math.random() * window.innerWidth);
+      const y = Math.floor(Math.random() * window.innerHeight);
+      const messageElem = document.createElement("div");
+      messageElem.classList.add("placed-text");
+      messageElem.innerText = message;
+      messageElem.style.position = "absolute";
+      messageElem.style.top = `${y}px`;
+      messageElem.style.left = `${x}px`;
+      messageElem.style.fontSize = "200%";
+      messageElem.style.textShadow = "0 0 10px #f00";
+      messageElem.style.padding = "1em";
+      messageElem.style.fontFamily = "'Georgia', serif";
+
+
+      document.body.appendChild(messageElem);
+      return messageElem;
+    });
+
+    // Remove the messages after 5 seconds.
+    setTimeout(() => {
+      messages.forEach((messageElem) => messageElem.remove());
+    }, 2000);
+
+    messageDisplayed = true;
   }
 }
 
