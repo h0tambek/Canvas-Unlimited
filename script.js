@@ -4,7 +4,7 @@ const textInput = document.getElementById("text-input");
 const colorPicker = document.getElementById("color-picker");
 const guiToggle = document.getElementById("gui-toggle");
 const saveButton = document.getElementById("save-button");
-
+ 
 let mouseStartX = 0;
 let mouseStartY = 0;
 let guiOffsetX = 0;
@@ -48,7 +48,22 @@ function handleSaveClick() {
 	canvas.height = height;
 	
 	ctx.clearRect(0, 0, width, height);
-	
+  const backgroundColor = document.body.style.backgroundColor;
+  if (backgroundColor) {
+    ctx.fillStyle = backgroundColor;
+    ctx.fillRect(0, 0, width, height);
+  }
+
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    const rect = element.getBoundingClientRect();
+    const x = rect.left - minX;
+    const y = rect.top - minY;
+    const color = element.style.color;
+    ctx.fillStyle = color;
+    ctx.fillText(element.innerText, x, y);
+  }
+
 	for (let i = 0; i < elements.length; i++) {
 	  const element = elements[i];
 	  const rect = element.getBoundingClientRect();
@@ -112,6 +127,7 @@ function handleClick(event) {
         return;
     }
     if (!isDrawing) {
+      
         const textElement = document.createElement("div");
         textElement.classList.add("pasted-text");
         textElement.innerText = lastText;
@@ -122,12 +138,12 @@ function handleClick(event) {
         
         const textWidth = textElement.offsetWidth;
         const textHeight = textElement.offsetHeight;
-        const centerX = event.clientX - textWidth / 2;
-        const centerY = event.clientY - textHeight / 2;
+        const centerX = event.clientX + window.scrollX - textWidth / 2;
+        const centerY = event.clientY + window.scrollY - textHeight / 2;
         
         textElement.style.top = `${centerY}px`;
         textElement.style.left = `${centerX}px`;
-      
+        
         document.body.appendChild(textElement);
     }
 }
@@ -160,8 +176,8 @@ document.addEventListener("mousemove", (event) => {
         
         const textWidth = textElement.offsetWidth;
         const textHeight = textElement.offsetHeight;
-        const centerX = event.clientX - textWidth / 2;
-        const centerY = event.clientY - textHeight / 2;
+        const centerX = event.clientX + window.scrollX - textWidth / 2;
+        const centerY = event.clientY + window.scrollY - textHeight / 2;
         
         textElement.style.top = `${centerY}px`;
         textElement.style.left = `${centerX}px`;
