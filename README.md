@@ -11,4 +11,4 @@ Made with Javascript
 ![Screenshot](test.JPG)
 
 # saved art 
-![Screenshot](canvas-unlimited-background.png)
+![Screenshot](canvas-unlimited -background.png)
