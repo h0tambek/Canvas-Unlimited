@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-40MVYB8Q8P"></script>
 <script>
@@ -22,8 +24,10 @@
     <div id="color-picker-container">
       <input type="color" id="bolor-picker">
     </div>
-    <button id="gui-toggle">Open Text Art</button>
+    <button id="gui-toggle">Open Text Art</button>   
+     <button id="upload-button">Upload</button>
     <button id="clear-button">Clear</button>
+    <button id="remove-images-button">Remove Images</button>
     <button id="save-button">Save image</button>
 
     <div id="gui-container">
@@ -35,10 +39,13 @@
         <button id="submit-button" type="submit">Submit</button>
       </form>
     </div>
+    <div class="slider-container">
+      <input type="range" id="font-size-slider" min="15" max="300" value="15">
     <div class="container">
 <a class="github-button" href="https://github.com/h0tambek" data-color-scheme="no-preference: light_high_contrast; light: dark; dark: dark;" aria-label="Follow @h0tambek on GitHub">Follow @h0tambek</a>    </div>
 
-    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="script.js"></script>  
+      <script type="text/javascript" src="upload.js"></script>
     <script type="text/javascript" src="background.js"></script>
 <script async defer src="https://buttons.github.io/buttons.js"></script>
   </body>
