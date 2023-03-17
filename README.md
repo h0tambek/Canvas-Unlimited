@@ -8,7 +8,7 @@ Made with Javascript
  - Color options for text
  - Drawing is savable as png
 # UI - canvasunlimited.netlify.app (wip)
-![Screenshot](ui.JPG)
+![Screenshot](UI.JPG)
 
 # art i saved
 ![Screenshot](canvas-unlimited.png)
