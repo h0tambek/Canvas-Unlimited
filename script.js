@@ -7,6 +7,16 @@ const saveButton = document.getElementById("save-button");
 const title = document.querySelector(".title");
 const fontSizeSlider = document.getElementById("font-size-slider");
 
+const fontSelect = document.getElementById("font-select");
+let selectedFont = "Arial"; 
+
+fontSelect.addEventListener("change", () => {
+  selectedFont = fontSelect.value;
+  textInput.style.fontFamily = selectedFont;
+
+});
+
+
 let clearCount = 0;
 let messageDisplayed = false;
 let didBroEvenPressCtrlZBefore = false;
@@ -15,7 +25,11 @@ let mouseStartY = 0;
 let guiOffsetX = 0;
 let guiOffsetY = 0;
 
+let fontSize = 20;
 
+fontSizeSlider.addEventListener("input", () => {
+  fontSize = parseInt(fontSizeSlider.value);
+});
 
 const pastedTextElements = [];
 colorPicker.addEventListener("input", () => {
@@ -60,17 +74,20 @@ function handleSaveClick() {
   for (let i = 0; i < elements.length; i++) {
     const element = elements[i];
     const rect = element.getBoundingClientRect();
+    const textWidth = element.offsetWidth;
+    const textHeight = element.offsetHeight;
+  
     if (rect.left < minX) {
       minX = rect.left;
     }
     if (rect.top < minY) {
       minY = rect.top;
     }
-    if (rect.right > maxX) {
-      maxX = rect.right;
+    if (rect.right + textWidth > maxX) {
+      maxX = rect.right + textWidth;
     }
-    if (rect.bottom > maxY) {
-      maxY = rect.bottom;
+    if (rect.bottom + textHeight > maxY) {
+      maxY = rect.bottom + textHeight;
     }
   }
 
@@ -95,7 +112,7 @@ function handleSaveClick() {
     const color = element.style.color;
     const fontSize = parseInt(element.style.fontSize);
     ctx.fillStyle = color;
-    ctx.font = `${fontSize}px sans-serif`;
+    ctx.font = `${fontSize}px ${element.style.fontFamily}`;
     ctx.fillText(element.innerText, x, y);
   }
 
@@ -138,8 +155,7 @@ function handleSubmit(event) {
   lastText = text;
   if (text) {
     fontSizeSlider.style.display = "block";
-    fontSizeSlider.value = 15; // add this line to reset the slider value
-
+    fontSizeSlider.value = 15; 
   }
   guiContainer.style.display = "none";
   document.addEventListener("click", handleClick);
@@ -174,26 +190,21 @@ function handleClick(event) {
         textElement.style.userSelect = "none";
         textElement.style.fontSize = `${fontSize}px`;
         textElement.style.pointerEvents = "none";
+        textElement.style.fontFamily = selectedFont;
+        document.body.appendChild(textElement);
 
         const textWidth = textElement.offsetWidth;
         const textHeight = textElement.offsetHeight;
         const centerX = event.clientX + window.scrollX - textWidth / 2;
         const centerY = event.clientY + window.scrollY - textHeight / 2;
-        
         textElement.style.top = `${centerY}px`;
         textElement.style.left = `${centerX}px`;
         
-        document.body.appendChild(textElement);
         pastedTextElements.push(textElement);
 
     }
-    fontSize = 20;
 }
-let fontSize = 20;
 
-fontSizeSlider.addEventListener("input", () => {
-  fontSize = parseInt(fontSizeSlider.value);
-});
 document.addEventListener("mousedown", () => {
 	const openGuiButton = document.getElementById("gui-toggle");
     if (guiContainer.style.display !== "none") {
@@ -230,6 +241,8 @@ document.addEventListener("mousemove", (event) => {
         textElement.style.pointerEvents = "none";
 
         textElement.style.fontSize = `${fontSize}px`;
+        textElement.style.fontFamily = selectedFont;
+        document.body.appendChild(textElement);
 
         const textWidth = textElement.offsetWidth;
         const textHeight = textElement.offsetHeight;
@@ -322,6 +335,8 @@ function toggleGui() {
     fontSizeSlider.style.display = "none";
     fontSizeSlider.value = 15;
     textInput.value = "";
+    fontSize = 20;
+
 
 	} else {
 	  guiContainer.style.display = "none";

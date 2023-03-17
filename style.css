@@ -81,14 +81,20 @@
   cursor: pointer;
   margin-bottom: 1em;
 }
+#font-select {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 1px;
+  margin-top: 1em;
+}
 
 #color-picker {
   border: none;
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   border-radius: 1%;
   background-color: rgb(226, 230, 45);
-  margin-bottom: 1em;
 }
 
 #text-form,
@@ -158,10 +164,9 @@
 
 #submit-button {
   padding: 0.5em 1em;
-  border-radius: 8px;
   border: none;
-  background-color: #fff;
-  color: #333;
+  background-color: black;
+  color: white;
   font-weight: bold;
   cursor: pointer;
   margin-top: 1em;
