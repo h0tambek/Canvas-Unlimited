@@ -264,6 +264,8 @@ document.addEventListener("mousemove", (event) => {
 const clearButton = document.getElementById("clear-button");
 
 function handleClearClick() {
+  isDrawing = false;
+
   const pastedTextElements = document.getElementsByClassName("pasted-text");
   while (pastedTextElements.length > 0) {
     pastedTextElements[0].remove();

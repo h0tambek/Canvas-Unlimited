@@ -9,7 +9,7 @@ changeColorButton.addEventListener('click', () => {
     colorPickerContainer.style.display = 'block';
   }});
 
-bolor.addEventListener('input', () => {
+bolor.addEventListener('input', () => { isDrawing = false;
   document.body.style.backgroundColor = bolor.value;
 });bolor.addEventListener('change', () => {
   colorPickerContainer.style.display = 'none';
