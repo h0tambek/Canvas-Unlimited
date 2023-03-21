@@ -186,7 +186,7 @@ function handleClick(event) {
         textElement.innerText = lastText;
         textElement.style.position = "absolute";
         textElement.style.zIndex = "0.5";
-        textElement.style.color = color;
+        textElement.style.color = colorPicker.value;
         textElement.style.userSelect = "none";
         textElement.style.fontSize = `${fontSize}px`;
         textElement.style.pointerEvents = "none";
@@ -236,7 +236,7 @@ document.addEventListener("mousemove", (event) => {
         textElement.innerText = lastText;
         textElement.style.position = "absolute";
         textElement.style.zIndex = "0.5";
-        textElement.style.color = color;
+        textElement.style.color = colorPicker.value;
         textElement.style.userSelect = "none";
         textElement.style.pointerEvents = "none";
 
@@ -286,7 +286,6 @@ function handleClearClick() {
   const x = Math.floor(Math.random() * window.innerWidth);
   const y = Math.floor(Math.random() * window.innerHeight);
   const messageElem = document.createElement("div");
-  messageElem.classList.add("placed-text");
   messageElem.innerText = message;
   messageElem.style.position = "absolute";
   messageElem.style.top = `${y}px`;
@@ -346,3 +345,4 @@ function toggleGui() {
   }
   
   guiToggle.addEventListener("click", toggleGui);
+
