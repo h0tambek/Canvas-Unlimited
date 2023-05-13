@@ -40,11 +40,11 @@ colorPicker.addEventListener("input", () => {
   textInput.style.border = `2px solid ${color}`;
 
 });
-
 function handleUndo() {
   if (pastedTextElements.length > 0) {
     const lastElement = pastedTextElements.pop();
-    lastElement.remove();
+    const { element } = lastElement;
+    element.parentNode.removeChild(element);
     didBroEvenPressCtrlZBefore = true;
   }
 }
