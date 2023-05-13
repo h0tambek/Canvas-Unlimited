@@ -44,12 +44,8 @@ colorPicker.addEventListener("input", () => {
 function handleUndo() {
   if (pastedTextElements.length > 0) {
     const lastElement = pastedTextElements.pop();
-    const prevColor = lastElement.style.color; 
     lastElement.remove();
     didBroEvenPressCtrlZBefore = true;
-    if (pastedTextElements.length > 0) {
-      pastedTextElements[pastedTextElements.length - 1].style.color = prevColor;
-    }
   }
 }
 window.addEventListener("keydown", (event) => {
