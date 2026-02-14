@@ -10,7 +10,6 @@
   z-index: 3;
   left: 50%;
   top: 2%;
-  transform: translateX(-50%);
 }
 
 #font-size-slider {
@@ -30,6 +29,7 @@
   background-color: #000000;
   border-radius: 2px;
   border: none;
+  position: relative;
   transform: translateY(-50%);
 }
 
@@ -107,8 +107,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-width: 90%;       /* responsive */
   width: 500px;
+  max-width: 95%;
   z-index: 2;
   opacity: 0.9;
   padding: 1.5em;
@@ -127,7 +127,7 @@
   left: 2px;
 }
 
-/* ---------------- MOBILE RESPONSIVENESS ---------------- */
+/* -------- SAFE MOBILE SCALING ONLY -------- */
 
 @media (max-width: 600px) {
 
@@ -150,12 +150,8 @@
   #save-button,
   #remove-images-button,
   #upload-button {
-    padding: 10px;
-    font-size: 12px;
-  }
-
-  .slider-container {
-    top: 5%;
+    padding: 9px;
+    font-size: 11px;
   }
 
 }
