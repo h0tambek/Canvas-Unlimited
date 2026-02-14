@@ -135,6 +135,29 @@ function handleSaveClick() {
 }
 
 saveButton.addEventListener("click", handleSaveClick);
+// Mobile Undo Button
+const mobileUndo = document.createElement("button");
+mobileUndo.innerText = "↺";
+mobileUndo.style.position = "fixed";
+mobileUndo.style.bottom = "10px";
+mobileUndo.style.right = "10px";
+mobileUndo.style.background = "#333";
+mobileUndo.style.color = "#fff";
+mobileUndo.style.border = "none";
+mobileUndo.style.borderRadius = "13px";
+mobileUndo.style.padding = "13px";
+mobileUndo.style.zIndex = "3";
+mobileUndo.style.fontSize = "16px";
+mobileUndo.style.display = "none";
+
+mobileUndo.addEventListener("click", handleUndo);
+document.body.appendChild(mobileUndo);
+
+// Show only on mobile
+if (/Mobi|Android/i.test(navigator.userAgent)) {
+  mobileUndo.style.display = "block";
+}
+
 
 function handleGuiMouseDown(event) {
   mouseStartX = event.clientX;
@@ -323,3 +346,4 @@ function toggleGui() {
 }
 
 guiToggle.addEventListener("click", toggleGui);
+
