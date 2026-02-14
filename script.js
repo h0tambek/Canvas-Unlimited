@@ -8,6 +8,10 @@ const title = document.querySelector(".title");
 const fontSizeSlider = document.getElementById("font-size-slider");
 const fontSelect = document.getElementById("font-select");
 const clearButton = document.getElementById("clear-button");
+const gradientToggle = document.getElementById("gradient-toggle");
+const gradientEndPicker = document.getElementById("gradient-end-picker");
+const rotationSlider = document.getElementById("rotation-slider");
+const rotationValue = document.getElementById("rotation-value");
 
 let selectedFont = "Arial";
 let clearCount = 0;
@@ -19,6 +23,7 @@ let guiOffsetX = 0;
 let guiOffsetY = 0;
 let fontSize = 20;
 let isDrawing = false;
+let textRotation = 0;
 
 const pastedTextElements = [];
 
@@ -37,6 +42,11 @@ colorPicker.addEventListener("input", () => {
   guiContainer.style.border = `2px solid ${color}`;
   textInput.style.color = color;
   textInput.style.border = `2px solid ${color}`;
+});
+
+rotationSlider.addEventListener("input", () => {
+  textRotation = parseInt(rotationSlider.value);
+  rotationValue.innerText = `${textRotation}°`;
 });
 
 function handleUndo() {
@@ -119,10 +129,26 @@ function handleSaveClick() {
 
     const color = element.style.color;
     const size = parseInt(element.style.fontSize);
+    const rotationMatch = element.style.transform.match(/rotate\((-?\d+)deg\)/);
+    const rotation = rotationMatch ? parseInt(rotationMatch[1]) : 0;
 
-    ctx.fillStyle = color;
+    ctx.save();
+    ctx.translate(x, y + size);
+    ctx.rotate((rotation * Math.PI) / 180);
     ctx.font = `${size}px ${element.style.fontFamily}`;
-    ctx.fillText(element.innerText, x, y + size);
+
+    if (element.dataset.gradient === "true") {
+      const textWidth = ctx.measureText(element.innerText).width;
+      const gradient = ctx.createLinearGradient(0, 0, textWidth, 0);
+      gradient.addColorStop(0, element.dataset.gradientStart || color);
+      gradient.addColorStop(1, element.dataset.gradientEnd || color);
+      ctx.fillStyle = gradient;
+    } else {
+      ctx.fillStyle = color;
+    }
+
+    ctx.fillText(element.innerText, 0, 0);
+    ctx.restore();
   }
 
   const dataUrl = canvas.toDataURL("image/png");
@@ -197,6 +223,25 @@ function handleSubmit(event) {
   document.addEventListener("click", handleClick);
 }
 
+function applyTextStyles(textElement) {
+  textElement.style.color = colorPicker.value;
+  textElement.style.userSelect = "none";
+  textElement.style.fontSize = `${fontSize}px`;
+  textElement.style.pointerEvents = "none";
+  textElement.style.fontFamily = selectedFont;
+  textElement.style.transform = `rotate(${textRotation}deg)`;
+
+  if (gradientToggle.checked) {
+    textElement.style.backgroundImage = `linear-gradient(90deg, ${colorPicker.value}, ${gradientEndPicker.value})`;
+    textElement.style.webkitBackgroundClip = "text";
+    textElement.style.backgroundClip = "text";
+    textElement.style.webkitTextFillColor = "transparent";
+    textElement.dataset.gradient = "true";
+    textElement.dataset.gradientStart = colorPicker.value;
+    textElement.dataset.gradientEnd = gradientEndPicker.value;
+  }
+}
+
 function handleClick(event) {
   const openGuiButton = document.getElementById("gui-toggle");
 
@@ -223,11 +268,7 @@ function handleClick(event) {
     textElement.innerText = lastText;
     textElement.style.position = "absolute";
     textElement.style.zIndex = "1";
-    textElement.style.color = colorPicker.value;
-    textElement.style.userSelect = "none";
-    textElement.style.fontSize = `${fontSize}px`;
-    textElement.style.pointerEvents = "none";
-    textElement.style.fontFamily = selectedFont;
+    applyTextStyles(textElement);
 
     document.body.appendChild(textElement);
 
@@ -268,11 +309,7 @@ document.addEventListener("mousemove", (event) => {
     textElement.innerText = lastText;
     textElement.style.position = "absolute";
     textElement.style.zIndex = "1";
-    textElement.style.color = colorPicker.value;
-    textElement.style.userSelect = "none";
-    textElement.style.pointerEvents = "none";
-    textElement.style.fontSize = `${fontSize}px`;
-    textElement.style.fontFamily = selectedFont;
+    applyTextStyles(textElement);
 
     document.body.appendChild(textElement);
 
@@ -340,6 +377,9 @@ function toggleGui() {
     fontSizeSlider.value = 15;
     textInput.value = "";
     fontSize = 20;
+    textRotation = 0;
+    rotationSlider.value = 0;
+    rotationValue.innerText = "0°";
   } else {
     guiContainer.style.display = "none";
   }
