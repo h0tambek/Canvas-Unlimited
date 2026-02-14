@@ -18,7 +18,7 @@ let mouseStartY = 0;
 let guiOffsetX = 0;
 let guiOffsetY = 0;
 let fontSize = 20;
-let isDrawing = false; 
+let isDrawing = false;
 
 const pastedTextElements = [];
 
@@ -41,8 +41,7 @@ colorPicker.addEventListener("input", () => {
 
 function handleUndo() {
   if (pastedTextElements.length > 0) {
-    const lastElement = pastedTextElements.pop(); 
-
+    const lastElement = pastedTextElements.pop();
     lastElement.remove();
     didBroEvenPressCtrlZBefore = true;
   }
@@ -61,24 +60,35 @@ function setGuiPosition(x, y) {
 
 function handleSaveClick() {
   const elements = document.getElementsByClassName("pasted-text");
+  const images = document.querySelectorAll("img");
+
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
-  let minX = window.innerWidth;
-  let minY = window.innerHeight;
-  let maxX = 0;
-  let maxY = 0;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
 
+  // Include text elements
   for (let i = 0; i < elements.length; i++) {
-    const element = elements[i];
-    const rect = element.getBoundingClientRect();
-
-    if (rect.left < minX) minX = rect.left;
-    if (rect.top < minY) minY = rect.top;
-
-    if (rect.right > maxX) maxX = rect.right;
-    if (rect.bottom > maxY) maxY = rect.bottom;
+    const rect = elements[i].getBoundingClientRect();
+    minX = Math.min(minX, rect.left);
+    minY = Math.min(minY, rect.top);
+    maxX = Math.max(maxX, rect.right);
+    maxY = Math.max(maxY, rect.bottom);
   }
+
+  // Include uploaded images
+  images.forEach(img => {
+    const rect = img.getBoundingClientRect();
+    minX = Math.min(minX, rect.left);
+    minY = Math.min(minY, rect.top);
+    maxX = Math.max(maxX, rect.right);
+    maxY = Math.max(maxY, rect.bottom);
+  });
+
+  if (!isFinite(minX)) return; // nothing to save
 
   const width = maxX - minX;
   const height = maxY - minY;
@@ -86,14 +96,21 @@ function handleSaveClick() {
   canvas.width = width;
   canvas.height = height;
 
-  ctx.clearRect(0, 0, width, height);
-
   const backgroundColor = getComputedStyle(document.body).backgroundColor;
   if (backgroundColor) {
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, 0, width, height);
   }
 
+  // Draw images first (so text stays on top like your app visually)
+  images.forEach(img => {
+    const rect = img.getBoundingClientRect();
+    const x = rect.left - minX;
+    const y = rect.top - minY;
+    ctx.drawImage(img, x, y, rect.width, rect.height);
+  });
+
+  // Draw text
   for (let i = 0; i < elements.length; i++) {
     const element = elements[i];
     const rect = element.getBoundingClientRect();
@@ -105,7 +122,6 @@ function handleSaveClick() {
 
     ctx.fillStyle = color;
     ctx.font = `${size}px ${element.style.fontFamily}`;
-
     ctx.fillText(element.innerText, x, y + size);
   }
 
@@ -113,7 +129,9 @@ function handleSaveClick() {
   const link = document.createElement("a");
   link.href = dataUrl;
   link.download = "canvas-unlimited.png";
+  document.body.appendChild(link);
   link.click();
+  document.body.removeChild(link);
 }
 
 saveButton.addEventListener("click", handleSaveClick);
@@ -152,8 +170,7 @@ function handleSubmit(event) {
 
   guiContainer.style.display = "none";
 
-  document.removeEventListener("click", handleClick); 
-
+  document.removeEventListener("click", handleClick);
   document.addEventListener("click", handleClick);
 }
 
@@ -182,8 +199,7 @@ function handleClick(event) {
     textElement.classList.add("pasted-text");
     textElement.innerText = lastText;
     textElement.style.position = "absolute";
-    textElement.style.zIndex = "1"; 
-
+    textElement.style.zIndex = "1";
     textElement.style.color = colorPicker.value;
     textElement.style.userSelect = "none";
     textElement.style.fontSize = `${fontSize}px`;
@@ -205,8 +221,7 @@ function handleClick(event) {
   }
 }
 
-document.addEventListener("mousedown", (event) => { 
-
+document.addEventListener("mousedown", (event) => {
   if (guiContainer.style.display !== "none") return;
 
   if (
@@ -229,8 +244,7 @@ document.addEventListener("mousemove", (event) => {
     textElement.classList.add("pasted-text");
     textElement.innerText = lastText;
     textElement.style.position = "absolute";
-    textElement.style.zIndex = "1"; 
-
+    textElement.style.zIndex = "1";
     textElement.style.color = colorPicker.value;
     textElement.style.userSelect = "none";
     textElement.style.pointerEvents = "none";
@@ -260,7 +274,7 @@ function handleClearClick() {
     elements[0].remove();
   }
 
-  pastedTextElements.length = 0; 
+  pastedTextElements.length = 0;
 
   clearCount++;
 
@@ -269,9 +283,23 @@ function handleClearClick() {
     document.body.style.transition = "background-color 1s ease-in-out";
     document.body.style.color = "red";
 
+    // ✅ Added visible undo hint
+    const hint = document.createElement("div");
+    hint.innerText = "ctrl z to undo :)";
+    hint.style.position = "fixed";
+    hint.style.top = "50%";
+    hint.style.left = "50%";
+    hint.style.transform = "translate(-50%, -50%)";
+    hint.style.fontSize = "40px";
+    hint.style.fontFamily = "Georgia, serif";
+    hint.style.color = "red";
+    hint.style.zIndex = "9999";
+    document.body.appendChild(hint);
+
     setTimeout(() => {
       document.body.style.backgroundColor = "";
       document.body.style.color = "";
+      hint.remove();
     }, 2000);
 
     messageDisplayed = true;
@@ -295,4 +323,3 @@ function toggleGui() {
 }
 
 guiToggle.addEventListener("click", toggleGui);
-
